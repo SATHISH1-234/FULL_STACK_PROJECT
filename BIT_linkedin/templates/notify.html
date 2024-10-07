@@ -1,0 +1,193 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications</title>
+    <link rel="icon" href="{% static 'img/linkedin.png' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+      }
+
+      /* Header with LinkedIn Theme Color */
+      .header {
+        background-color: #0073b1;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      /* Notifications Container */
+      .notifications-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: white;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      /* Notification Item Styling */
+      .notification-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e6e6e6;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .notification-item:last-child {
+        border-bottom: none;
+      }
+
+      .notification-item:hover {
+        background-color: #eaf2f8;
+      }
+
+      .notification-icon {
+        flex-shrink: 0;
+        background-color: #0073b1;
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        margin-right: 15px;
+      }
+
+      .notification-content {
+        flex-grow: 1;
+      }
+
+      .notification-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+        color: #333;
+      }
+
+      .notification-time {
+        font-size: 14px;
+        color: #777;
+        margin-top: 5px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 20px;
+        }
+
+        .notification-item {
+          padding: 10px 15px;
+        }
+
+        .notification-title {
+          font-size: 14px;
+        }
+
+        .notification-time {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">
+              <a href="index.html" class="logo"><img src="{% static 'img/linkedin.png' %}" style="height:50px ;"></a>
+              <div class="search-box">
+                  <img src="{% static 'img/search.png' %}" style="height: 25px;">
+                  <input type="text" placeholder="search" style="height: 25px;">
+              </div>
+      </div>
+      <div class="nav-center">
+        <ul>
+          <li><a href="{% url 'home' %}"><img src="{% static 'img/home.png' %}" style="height:20px;"><span>Home</span></a></li>
+          <li><a href="{% url 'mynet' %}"><img src="{% static 'img/user.png' %}" style="height:20px ;"><span>My Networks</span></li>
+          <li><a href="{% url 'jobs' %}"><img src="{% static 'img/suitcase.png' %}" style="height:20px ;"><span>Jobs & intern</span></li>
+          <li><a href="{% url 'message' %}"><img src="{% static 'img/chat.png' %}" style="height:20px ;"><span>Messaging</span></li>  
+          <li><a href="{% url 'new' %}"><img src="{% static 'img/bell.png' %}" style="height:20px ;"><span>Notification</span></li>  
+          <li><a href="{% url 'resume' %}"><img src="{% static 'img/resume.png' %}" style="height:20px ;"><span>Resume builder</span></li>  
+  </ul>
+      </div>
+      <div class="nav-right">
+         
+          <!-- {% if user.is_authenticated %} -->
+          <!-- <li style="list-style: none;">Hi,{{user.first_name}}</li> -->
+         
+          <!-- <a href="account/logout">Logout</a>
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
+          {% else %} -->
+          <a href="{% url 'login' %}"><button class="login-btn">Login</button></a>
+          <!-- {% endif %} -->
+      </div>
+  </nav>
+    <!-- Header Section -->
+    <div class="header">
+      <h1>Notifications</h1>
+    </div>
+
+    <!-- Notifications List Container -->
+    <div class="notifications-container">
+      <!-- Notification Item -->
+      <div class="notification-item">
+        <div class="notification-icon">🔔</div>
+        <div class="notification-content">
+          <p class="notification-title">
+            You have a new connection request from John Doe.
+          </p>
+          <p class="notification-time">5 minutes ago</p>
+        </div>
+      </div>
+
+      <div class="notification-item">
+        <div class="notification-icon">📄</div>
+        <div class="notification-content">
+          <p class="notification-title">Jane Smith commented on your post.</p>
+          <p class="notification-time">10 minutes ago</p>
+        </div>
+      </div>
+
+      <div class="notification-item">
+        <div class="notification-icon">💼</div>
+        <div class="notification-content">
+          <p class="notification-title">
+            New job recommendation based on your profile.
+          </p>
+          <p class="notification-time">30 minutes ago</p>
+        </div>
+      </div>
+
+      <div class="notification-item">
+        <div class="notification-icon">👥</div>
+        <div class="notification-content">
+          <p class="notification-title">Michael Johnson viewed your profile.</p>
+          <p class="notification-time">1 hour ago</p>
+        </div>
+      </div>
+
+      <!-- Add more notifications here -->
+    </div>
+
+    <script>
+      // JavaScript for potential dynamic notifications can be added here
+    </script>
+  </body>
+</html>

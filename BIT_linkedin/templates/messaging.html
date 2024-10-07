@@ -1,0 +1,326 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peer Messaging</title>
+    <link rel="icon" href="{% static 'img/linkedin.png' %}" />
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: "Concert One", sans-serif;
+        font-style: normal;
+      }
+      body {
+        background: #ecebeb;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+      }
+      
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        position: sticky;
+        padding: 6px 6%;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+      .nav-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 10px;
+      }
+      .logo img {
+        margin-right: 15px;
+        display: block;
+      }
+      .nav-center ul li {
+        display: inline-block;
+        list-style: none;
+      }
+      .nav-center ul li a {
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        margin: 8px 10px;
+        padding-right: 5px;
+        gap: 0 10px;
+        position: relative;
+      }
+      .nav-center ul li a::after {
+        content: "";
+        position: absolute;
+        background-color: rgb(20, 23, 23);
+        height: 2px;
+        width: 0;
+        left: 0;
+        bottom: -10px;
+      }
+      .nav-center ul li a:hover::after {
+        width: 100%;
+        transition: 0.5s linear;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 0 40px;
+      }
+      .search-box {
+        background-color: rgb(136, 174, 207);
+        width: 100%;
+        max-width: 300px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: rgb(237, 238, 239);
+      }
+      .search-box input {
+        outline: none;
+        border: none;
+        background: transparent;
+        width: 100%;
+      }
+      .login-btn {
+        padding: 5px 10px;
+        border-radius: 25px;
+        background: skyblue;
+        border: none;
+      }
+
+      /* Existing messaging styles */
+      .messaging-container {
+        display: flex;
+        height: 100vh;
+        background-color: #f4f4f9;
+      }
+
+      /* Sidebar with LinkedIn Theme Color */
+      .messaging-sidebar {
+        flex: 1;
+        background-color: #0073b1;
+        color: white;
+        padding: 20px;
+        min-width: 250px;
+      }
+
+      .messaging-sidebar h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+
+      .peer-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      /* Sidebar Peer List Items */
+      .peer {
+        padding: 15px;
+        background-color: #006097;
+        margin-bottom: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        color: white;
+      }
+
+      .peer:hover {
+        background-color: #004e7c;
+      }
+
+      /* Main Messaging Content */
+      .messaging-content {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header for the Messaging Section */
+      .message-header {
+        padding: 20px;
+        background-color: #ecf0f1;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+      }
+
+      /* Message History Area */
+      .message-history {
+        flex: 1;
+        padding: 20px;
+        overflow-y: scroll;
+        background-color: white;
+      }
+
+      /* Styling for Sent and Received Messages */
+      .message-history .message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      .message-history .message.sent {
+        background-color: #0073b1;
+        color: white;
+        align-self: flex-end;
+        text-align: right;
+      }
+
+      .message-history .message.received {
+        background-color: #ecf0f1;
+        align-self: flex-start;
+      }
+
+      /* Message Input Section */
+      .message-input {
+        display: flex;
+        padding: 15px;
+        background-color: #ecf0f1;
+        border-top: 1px solid #ccc;
+      }
+
+      /* Input Field for Typing Messages */
+      #message-input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+
+      /* Send Button with LinkedIn Theme Color */
+      #send-btn {
+        background-color: #0073b1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #send-btn:hover {
+        background-color: #005f8b;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .messaging-container {
+          flex-direction: column;
+        }
+
+        .messaging-sidebar {
+          width: 100%;
+          min-width: 100%;
+        }
+
+        .messaging-content {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+        <div class="nav-left">
+                <a href="index.html" class="logo"><img src="{% static 'img/linkedin.png' %}" style="height:50px ;"></a>
+                <div class="search-box">
+                    <img src="{% static 'img/search.png' %}" style="height: 25px;">
+                    <input type="text" placeholder="search" style="height: 25px;">
+                </div>
+        </div>
+        <div class="nav-center">
+            <ul>
+                    <li><a href="{% url 'home' %}"><img src="{% static 'img/home.png' %}" style="height:20px;"><span>Home</span></a></li>
+                    <li><a href="{% url 'mynet' %}"><img src="{% static 'img/user.png' %}" style="height:20px ;"><span>My Networks</span></li>
+                    <li><a href="{% url 'jobs' %}"><img src="{% static 'img/suitcase.png' %}" style="height:20px ;"><span>Jobs & intern</span></li>
+                    <li><a href="{% url 'message' %}"><img src="{% static 'img/chat.png' %}" style="height:20px ;"><span>Messaging</span></li>  
+                    <li><a href="{% url 'new' %}"><img src="{% static 'img/bell.png' %}" style="height:20px ;"><span>Notification</span></li>  
+                    <li><a href="{% url 'resume' %}"><img src="{% static 'img/resume.png' %}" style="height:20px ;"><span>Resume builder</span></li>  
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="{% url 'login' %}"><button class="login-btn">Login</button></a>
+        </div>
+    </nav>
+
+    <div class="messaging-container">
+      <div class="messaging-sidebar">
+        <h2>Peers</h2>
+        <ul class="peer-list">
+          <li class="peer">John Doe</li>
+          <li class="peer">Jane Smith</li>
+          <li class="peer">Michael Johnson</li>
+        </ul>
+      </div>
+
+      <div class="messaging-content">
+        <div class="message-header">
+          <h2 id="peer-name">John Doe</h2>
+        </div>
+
+        <div class="message-history" id="message-history">
+          <!-- Messages will be dynamically added here -->
+        </div>
+
+        <div class="message-input">
+          <textarea
+            id="message-input"
+            placeholder="Type a message..."
+          ></textarea>
+          <button id="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize elements
+      const messageInput = document.getElementById("message-input");
+      const sendBtn = document.getElementById("send-btn");
+      const messageHistory = document.getElementById("message-history");
+
+      // Dummy message data
+      let messages = [
+        { text: "Hey, how are you?", type: "received" },
+        { text: "I am good, how about you?", type: "sent" },
+      ];
+
+      // Function to render the messages
+      function renderMessages() {
+        messageHistory.innerHTML = ""; // Clear the current history
+        messages.forEach((message) => {
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message");
+          messageElement.classList.add(message.type);
+          messageElement.textContent = message.text;
+          messageHistory.appendChild(messageElement);
+        });
+        // Scroll to the bottom of the message history
+        messageHistory.scrollTop = messageHistory.scrollHeight;
+      }
+
+      // Handle sending a message
+      sendBtn.addEventListener("click", () => {
+        const messageText = messageInput.value;
+        if (messageText.trim() !== "") {
+          // Add the new message to the messages array
+          messages.push({ text: messageText, type: "sent" });
+          renderMessages(); // Re-render the messages
+          messageInput.value = ""; // Clear the input
+        }
+      });
+
+      // Render the initial messages
+      renderMessages();
+    </script>
+  </body>
+</html>
